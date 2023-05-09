@@ -1,6 +1,6 @@
 # AirBnB_clone
 
-#Welcome to the AirBnB clone project!
+# Welcome to the AirBnB clone project!
 
 First step: Write a command interpreter to manage your AirBnB objects.
 This is the first step towards building your first full web application: the AirBnB clone. This first step is very important because you will use what you build during this project with all other following projects: HTML/CSS templating, database storage, API, front-end integration…
@@ -13,7 +13,7 @@ create all classes used for AirBnB (User, State, City, Place…) that inherit fr
 create the first abstracted storage engine of the project: File storage.
 create all unittests to validate all our classes and storage engine
 
-##What’s a command interpreter?
+## What’s a command interpreter?
 Do you remember the Shell? It’s exactly the same but limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
 
 
@@ -24,7 +24,7 @@ Update attributes of an object
 Destroy an object
 
 
-##Execution
+## Execution
 Your shell should work like this in interactive mode:
 
 $ ./console.py
@@ -60,6 +60,6 @@ EOF  help  quit
 (hbnb)
 $
 
-##Authors
+## Authors
 Robert Ruai Mawich
 Ryan Onyango

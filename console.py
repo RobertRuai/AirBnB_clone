@@ -3,10 +3,9 @@ import cmd
 from models.base_model import BaseModel
 from models import FileStorage
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    intro = "Welcome to the HBNB command prompt. Type help or ? to list commands.\n"
-
 
     def do_quit(self, arg):
         """ Exit the program """
@@ -36,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_show(self, arg):
-        """Prints the string representation of an instance based on the class name and id"""
+        """Prints string repr of instance based class name and id"""
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -61,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id (save the change into the JSON file)"""
+        """Deletes an instance based on class name and id"""
         args = arg.split()
         if not arg:
             print("** class name missing **")
@@ -78,7 +77,10 @@ class HBNBCommand(cmd.Cmd):
                 FileStorage.save(self)
 
     def do_all(self, arg):
-        """Prints all string representations of all instances based or not on the class name"""
+        """
+           Prints all string repr of all instances
+           based or not on the class name
+        """
         objects = FileStorage.all(self)
         if not arg:
             print([str(objects[obj]) for obj in objects])

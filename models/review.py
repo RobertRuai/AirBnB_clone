@@ -1,6 +1,9 @@
-from base_model import BaseModel
+#!/usr/bin/python3
+"""Review module"""
+from models.base_model import BaseModel
 
-class Reveiw(BaseModel):
+
+class Review(BaseModel):
     """ Reveiw Class """
 
     place_id = ""
@@ -8,5 +11,5 @@ class Reveiw(BaseModel):
     text = ""
 
     def __init__(self, *args, **kwargs):
+        """init method"""
         super().__init__(*args, **kwargs)
-        

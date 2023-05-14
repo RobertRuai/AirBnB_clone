@@ -3,6 +3,12 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
@@ -12,7 +18,7 @@ class FileStorage:
 
     def all(self):
         """returns the dictionary __objects"""
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
@@ -23,9 +29,9 @@ class FileStorage:
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         n_string = {}
-        for key, value in self.__objects.items():
+        for key, value in FileStorage.__objects.items():
             n_string[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding='utf-8') as file:
+        with open(FileStorage.__file_path, 'w', encoding='utf-8') as file:
             json.dump(n_string, file)
 
     def reload(self):

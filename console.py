@@ -44,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
             print(obj.id)
         except NameError:
             print("** class doesn't exist **")
-
+            
     def do_show(self, arg):
         """
         Prints the string representation of an instance
@@ -66,7 +66,6 @@ class HBNBCommand(cmd.Cmd):
             return
         obj = instances[key]
         print(obj)
-
     
     def do_count(self, arg):
         """ Counts the number of instances of a class """

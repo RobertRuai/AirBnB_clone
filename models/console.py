@@ -9,12 +9,15 @@ from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.reveiw import Review
 
+from models.reveiw import Review
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    intro = "Welcome to the HBNB command prompt. Type help or ? to list commands.\n"
+    intro = "Welcome to the HBNB command prompt.\n"
+    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+               'City': City, 'State': State, 'Amenity': Amenity,
+               'Review': Review}
 
     def do_quit(self, arg):
         """ Exit the program """
@@ -30,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel and save it to the JSON file"""
+        """Create a new instance of BaseModel,saves it to JSON file"""
         if not arg:
             print("** class name missing **")
             return
@@ -96,7 +99,6 @@ class HBNBCommand(cmd.Cmd):
             del instances[key]
             FileStorage.save()
 
-
         def do_all(self, arg):
             """
             Prints all string repr of all instances based or not on the class name
@@ -111,7 +113,6 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     instances = self.classes[class_name].all()
                     print([str(instance) for instance in instances])
-
 
     def do_update(self, arg):
         """
@@ -146,8 +147,6 @@ class HBNBCommand(cmd.Cmd):
         for k, v in update_dict.items():
             setattr(obj, k, v)
         FileStorage.save()
-
-
 
 
 if __name__ == '__main__':

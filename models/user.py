@@ -1,4 +1,7 @@
-from base_model import BaseModel
+#!/usr/bin/python3
+"""User module"""
+from models.base_model import BaseModel
+
 
 class User(BaseModel):
     """ User class """
@@ -10,4 +13,3 @@ class User(BaseModel):
     def __init__(self, *args, **kwargs):
         """ Constructor method """
         super().__init__(*args, **kwargs)
-        

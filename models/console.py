@@ -1,152 +1,149 @@
 #!/usr/bin/env python3
+"""Console Module"""
+
 import cmd
-import shlex
-import ast
-from models.base_model import BaseModel
+from base_model import BaseModel
 from models import FileStorage
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
+    """Command Interpreter"""
     prompt = '(hbnb) '
-    intro = "Welcome to the HBNB command prompt.\n"
-    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'City': City, 'State': State, 'Amenity': Amenity,
-               'Review': Review}
 
-    def do_quit(self, arg):
-        """ Exit the program """
+    def do_quit(self, args):
+        """Quit command to exit the program"""
         return True
 
-    def do_EOF(self, arg):
-        """ EOF to exit the program (Ctrl-D) """
-        print()
+    def do_EOF(self, args):
+        """EOF command to exit the program"""
         return True
 
     def emptyline(self):
-        """ an empty line + ENTER shouldn’t execute anything """
+        """Called when an empty line is entered"""
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel,saves it to JSON file"""
-        if not arg:
+        """
+        Creates a new instance of BaseModel, saves it (to the JSON file)
+        and prints the id.
+        """
+        args = arg.split()
+        if len(args) == 0:
             print("** class name missing **")
             return
-
         try:
-            cls = eval(arg)
-            obj = cls()
-            obj.save()
-            print(obj.id)
+            instance = eval(args[0])()
+            instance.save()
+            print(instance.id)
         except NameError:
             print("** class doesn't exist **")
 
-        def do_show(self, arg):
-            """
-            Prints the string representation of an instance
-            based on the class name and id
-            """
-            args = arg.split()
-            if len(args) < 2:
-                print("** class name missing **")
-                return
-            if args[0] not in self.classes:
-                print("** class doesn't exist **")
-                return
-            class_name = args[0]
-            obj_id = args[1]
-            instances = FileStorage.all()
-            key = "{}.{}".format(class_name, obj_id)
-            if key not in instances:
-                print("** no instance found **")
-                return
-            obj = instances[key]
-            print(obj)
-
-    
-    def do_count(self, arg):
-        """ Counts the number of instances of a class """
-        class_name = arg.split('.')[0]
-        if class_name not in self.classes:
-            print("** class doesn't exist")
-        else:
-            count = self.classes[class_name].count()
-            print(count)
-
-        def do_destroy(self, arg):
-            """
-            Deletes an instance based on the class name and id
-            """
-            args = arg.split()
-            if len(args) < 2:
-                print("** class name missing **")
-                return
-            if args[0] not in self.classes:
-                print("** class doesn't exist **")
-                return
-            class_name = args[0]
-            obj_id = args[1]
-            instances = FileStorage.all()
-            key = "{}.{}".format(class_name, obj_id)
-            if key not in instances:
-                print("** no instance found **")
-                return
-            del instances[key]
-            FileStorage.save()
-
-        def do_all(self, arg):
-            """
-            Prints all string repr of all instances based or not on the class name
-            """
-            if not arg:
-                instances = FileStorage.all().values()
-                print([str(instance) for instance in instances])
-            else:
-                class_name = arg.split('.')[0]
-                if class_name not in self.classes:
-                    print("** class doesn't exist **")
-                else:
-                    instances = self.classes[class_name].all()
-                    print([str(instance) for instance in instances])
-
-    def do_update(self, arg):
+    def do_show(self, arg):
         """
-        Updates an instance based on the class name and id
-        by adding or updating attributes using a dictionary
+        Prints the string representation of an instance based on the
+        class name and id.
         """
         args = arg.split()
-        if len(args) < 3:
+        if len(args) == 0:
             print("** class name missing **")
             return
-        if args[0] not in self.classes:
+        if args[0] not in FileStorage.classes.keys():
             print("** class doesn't exist **")
             return
-        class_name = args[0]
-        obj_id = args[1]
-        instances = FileStorage.all()
-        key = "{}.{}".format(class_name, obj_id)
-        if key not in instances:
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        key = args[0] + "." + args[1]
+        if key not in FileStorage.all().keys():
             print("** no instance found **")
             return
-        obj = instances[key]
-        try:
-            dict_str = shlex.split(args[2])
-            if len(dict_str) == 0 or "{" not in dict_str[0]:
-                raise ValueError
-            update_dict = ast.literal_eval(dict_str[0])
-            if not isinstance(update_dict, dict):
-                raise ValueError
-        except (ValueError, SyntaxError):
-            print("** invalid dictionary argument **")
+        print(FileStorage.all()[key])
+
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name and id 
+        """
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
             return
-        for k, v in update_dict.items():
-            setattr(obj, k, v)
+        if args[0] not in FileStorage.classes.keys():
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        key = args[0] + "." + args[1]
+        if key not in FileStorage.all().keys():
+            print("** no instance found **")
+            return
+        del FileStorage.all()[key]
         FileStorage.save()
 
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances based or not on
+        the class name.
+        """
+        args = arg.split()
+        if len(args) == 0:
+            obj_list = [str(obj) for obj in FileStorage.all().values()]
+            print(obj_list)
+        elif args[0] not in FileStorage.classes.keys():
+            print("** class doesn't exist **")
+            return
+        else:
+            obj_list = [str(obj) for obj in FileStorage.all().values()
+                        if type(obj).__name__ == args[0]]
+            print(obj_list)
+
+    def do_update(self, args):
+        """
+        Updates an instance based on the class name and id by adding or updating
+        attribute (save the change into the JSON file).
+        
+        """
+        if not args:
+            print("** class name missing **")
+            return
+        args_list = args.split()
+        if len(args_list) < 2:
+            print("** class name missing **")
+            return
+        class_name = args_list[0]
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        if len(args_list) < 3:
+            print("** instance id missing **")
+            return
+        obj_id = args_list[1]
+        obj = FileStorage.get(class_name, obj_id)
+        if not obj:
+            print("** no instance found **")
+            return
+        if len(args_list) < 4:
+            print("** attribute name missing **")
+            return
+        attr_name = args_list[2]
+        if len(args_list) < 5:
+            print("** value missing **")
+            return
+        attr_value_str = args_list[3]
+        if len(args_list) > 5:
+            print("** value missing **")
+            return
+        if hasattr(obj, attr_name):
+            attr_value_type = type(getattr(obj, attr_name))
+            try:
+                attr_value = attr_value_type(attr_value_str)
+            except ValueError:
+                attr_value = attr_value_str
+            setattr(obj, attr_name, attr_value)
+            obj.save()
+        else:
+            print("** no instance found **")
+            return
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

@@ -1,0 +1,15 @@
+ header {background-color: #FFFFFF;
+         height:70px;
+         width: 100%;
+         border-bottom: 1px solid #CCCCCC;
+}
+img {float: left;
+     vertical-align: center;
+     margin-left: 20px;
+     height: 60px;
+}
+.hbnb {float: left;
+       vertical-align: center;
+       margin-left: 5px;
+       font-size: 24px;
+}

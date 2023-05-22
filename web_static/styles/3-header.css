@@ -8,8 +8,8 @@ img {float: left;
      margin-left: 20px;
      height: 60px;
 }
-.hbnb {float: left;
-       vertical-align: center;
-       margin-left: 5px;
-       font-size: 24px;
+.logo {background: url('../images/logo.png');
+       height: 60px;
+       margin-left: 20px;
+       width: 142px;
 }
